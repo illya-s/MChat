@@ -26,7 +26,7 @@
 }
 @media screen and (max-width: 720px) {
 	:root {
-		--section-h-padding: 2rem;
+		--section-h-padding: 1em;
 	}
 }
 
@@ -167,10 +167,6 @@
 			grid-column: 1 / 3;
 		}
 	}
-	@media screen and (max-width: 10800px) {
-		display: flex;
-		flex-direction: column;
-	}
 }
 .home-principles-list-block {
 	display: grid;
@@ -190,6 +186,7 @@
 	
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
+	gap: var(--ant-padding-lg);
 }
 
 .home-footer-left {
@@ -216,8 +213,18 @@
 
 
 
-@media screen and (max-width: 10800px) {
-	.home-main-section {
+@media screen and (max-width: 890px) {
+	.home-main-section, .home-about-section {
+		display: flex;
+		flex-direction: column;
+		align-items: normal;
+	}
+	
+	.home-main-sectio-top-title {
+		font-size: var(--ant-font-size-heading-1);
+	}
+	
+	.home-principles-list {
 		display: flex;
 		flex-direction: column;
 	}
