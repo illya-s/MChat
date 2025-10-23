@@ -129,7 +129,7 @@ export default function Home() {
 				</Section>
 				
 				<div className="home-main-buttons">
-					<Link to={"/signup"}>
+					<Link to={"/auth"}>
 						<Button type="primary" block>
 							Присоединиться
 						</Button>

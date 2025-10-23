@@ -5,7 +5,7 @@ import { createStaticHandler, createStaticRouter, StaticRouterProvider } from "r
 import { routes } from "./routes.jsx";
 import { ConfigProvider } from "antd";
 import { lightTheme, darkTheme } from "./Theme.jsx";
-import { AuthContext } from "./providers/AuthContext.jsx";
+import { AuthProvider } from "./providers/AuthContext.jsx";
 
 
 export async function render(req, _url, themeMode="light") {
@@ -24,9 +24,9 @@ export async function render(req, _url, themeMode="light") {
     const html = renderToString(
         <StyleProvider cache={cache}>
             <ConfigProvider theme={themeMode === "dark" ? darkTheme : lightTheme}>
-                <AuthContext>
+                <AuthProvider>
                     <StaticRouterProvider router={router} context={context} nonce="the-nonce" />
-                </AuthContext>
+                </AuthProvider>
             </ConfigProvider>
         </StyleProvider>
     )

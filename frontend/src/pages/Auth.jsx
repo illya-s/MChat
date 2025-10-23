@@ -1,159 +1,153 @@
-import './Auth.css'
-import { config } from '@/config';
-import { Section } from "../components/elements/Section"
-import { useMessageApi } from "../providers/MessageProvider"
+import "./Auth.css";
+import { config } from "@/config";
+import { Section } from "../components/elements/Section";
+import { useMessageApi } from "../providers/MessageProvider";
 
-import axios from "axios"
-import qs from "qs"
-import { useNavigate } from "react-router"
+import axios from "axios";
+import qs from "qs";
+import { useNavigate } from "react-router";
 
-import { Input, Button } from 'antd'
-import { useState } from 'react'
-import { useEffect } from 'react'
-import useAuth from '../providers/useAuth';
-
+import { Input, Button } from "antd";
+import { useState } from "react";
+import { useEffect } from "react";
+import { useAuth } from "../providers/useAuth";
+import { enter, request } from "../providers/authService";
 
 export default function Auth() {
-	const [user, setUser] = useState(null);
-	const deviceId = null;
-	
-	// const { user, setUser, deviceId } = useAuth();
-
-	console.log(user)
-	console.log(deviceId)
-	console.log(accessToken)
+	const { user, accessToken, setAccessToken, deviceId } = useAuth();
 
 	const navigate = useNavigate();
 	const message = useMessageApi();
 
 	const [isRequest, setIsRequest] = useState(true);
 
-	const [email, setEmail] = useState(null);
+	const [email, setEmail] = useState("");
 	const [emailIsValid, setEmailIsValid] = useState(null);
 
 	const [code, setCode] = useState();
 
-	const handleRequest = () => {
+	const handleRequest = async () => {
 		if (!email || !emailIsValid) {
-			setEmailIsValid(false)
-			return
+			setEmailIsValid(false);
+			return;
 		}
-		setIsRequest(false)
+		setIsRequest(false);
 
-		axios.post(
-			`${config.API_URL}/user/auth/request/`,
-			{ "email": email },
-			{
-				withCredentials: true,
-				paramsSerializer: (params) => qs.stringify(params, { arrayFormat: "repeat" })
-			}
-		)
-			.then(res => {
-				message.success(res.data.message)
-			})
-			.catch(exc => {
-				message.error(exc.response?.data?.message || "Ошибка соединения");
-				setIsRequest(true)
-			});
+		const res = await request(email);
+		if (res.success) {
+			message.success(res.message);
+		} else {
+			message.error(res.message);
+			setIsRequest(true);
+		}
+	};
 
-	}
-
-	const handleEnter = () => {
+	const handleEnter = async () => {
 		if (!email || !code) {
-			message.error("Требуется адрес электронной почты и код")
-			return
+			message.error("Требуется адрес электронной почты и код");
+			return;
 		}
 
-		axios.post(
-			`${config.API_URL}/user/auth/enter/`,
-			{ "email": email, 'code': code, "device_id": deviceId },
-			{
-				withCredentials: true,
-				paramsSerializer: (params) => qs.stringify(params, { arrayFormat: "repeat" })
-			}
-		)
-			.then(res => {
-				message.success(res.data.message)
-				setAccessToken(res.data.access_token)
-				setIsEnter(true)
-			})
-			.catch(exc => {
-				console.error
-				message.error(exc.response?.data?.message || "Ошибка соединения");
-			});
-	}
+		const res = await enter(email, code, deviceId);
+		if (res.success) {
+			message.success(res.message);
 
-	useEffect(() => {
+			message.success(res.message);
+			setAccessToken(res.access_token);
+		} else {
+			message.error(res.message);
+		}
+	};
+
+	useEffect(() => {		
 		if (email == null || email == "") {
 			setEmailIsValid(null);
 		} else {
 			const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-			setEmailIsValid(re.test(email))
+			setEmailIsValid(re.test(email));
 		}
-	}, [email])
+	}, [email]);
 
 	useEffect(() => {
 		if (code) {
-			handleEnter()
+			handleEnter();
 		}
-	}, [code])
+	}, [code]);
 
 	useEffect(() => {
 		if (user) {
-			navigate('/')
+			navigate("/chat");
 		}
-	}, [user])
+	}, [user]);
 
 	return (
-		<Section className='auth-wrapper'>
+		<Section className="auth-wrapper">
 			{isRequest ? (
 				<form
 					method="post"
-					className='auth-content-form'
+					className="auth-content-form"
+					onSubmit={(e) => {
+						e.preventDefault();
+						handleRequest()
+					}}
 				>
 					<h1>Авторизация</h1>
 
-					<div className='auth-content-form-block'>
-						<Input
+					<div className="auth-content-form-block">
+						<input
+							type="email"
 							placeholder="example@email.com"
 							value={email}
-							onChange={(e) => setEmail(e.target.value)}
-							status={emailIsValid === null ? "" : emailIsValid ? "" : "warning"}
+							onInput={(e) => setEmail(e.target.value)}
+							// status={
+							// 	emailIsValid === null
+							// 		? ""
+							// 		: emailIsValid
+							// 			? ""
+							// 			: "warning"
+							// }
 						/>
-						{emailIsValid == false && <p className='auth-form-warning'>Пожалуйста, введите корректный адрес электронной почты!</p>}
+						{emailIsValid == false && (
+							<p className="auth-form-warning">
+								Пожалуйста, введите корректный адрес электронной
+								почты!
+							</p>
+						)}
 					</div>
 
-					<Button
-						color="primary"
-						variant="solid"
-						block
-
-						onClick={handleRequest}
-					>Далее</Button>
+					<button
+						type="submit"
+					>
+						Далее
+					</button>
 				</form>
 			) : (
 				<form
 					method="post"
-					className='auth-content-form'
+					className="auth-content-form"
+					onSubmit={(e) => {
+						e.preventDefault();
+						handleEnter()
+					}}
 				>
-					<div className='auth-content-form-block'>
+					<div className="auth-content-form-block">
 						<span>Введите код</span>
 						<Input.OTP
-							formatter={(str) => str.replace(/\D/g, '')}
+							formatter={(str) => str.replace(/\D/g, "")}
 							maxLength={6}
 							onChange={(value) => setCode(value)}
 						/>
 					</div>
 
-					<Button
-						color="primary"
-						variant="solid"
-						block
-
-						onClick={handleEnter}
-					>Далее</Button>
+					<button
+						// color="primary"
+						// variant="solid"
+						type="submit"
+					>
+						Далее
+					</button>
 				</form>
 			)}
 		</Section>
-	)
+	);
 }

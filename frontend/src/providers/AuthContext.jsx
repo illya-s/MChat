@@ -14,24 +14,31 @@ function generateDeviceId() {
 export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-	const [accessToken, setAccessToken] = useState(null);
+	const [accessToken, setAccessToken] = useState(() => {
+		if (typeof window === "undefined") return null;
+		
+		return localStorage.getItem("access_token");
+	});
 	const [deviceId, setDeviceId] = useState(() => {
 		if (typeof window === "undefined") return null;
+
 		try {
 			let id = localStorage.getItem("device_id");
 			if (!id) {
 				id = generateDeviceId();
 				localStorage.setItem("device_id", id);
 			}
-			setDeviceId(id);
+			return id;
 		} catch (e) {
 			console.warn("Unable to write device_id to localStorage", e);
+			return null;
 		}
 	});
 	const [user, setUser] = useState(null);
 
 	useEffect(() => {
 		if (!accessToken) return;
+		localStorage.setItem("access_token", accessToken)
 		getUser(accessToken)
 			.then((data) => setUser(data))
 			.catch(async () => {
@@ -41,7 +48,9 @@ export function AuthProvider({ children }) {
 	}, [accessToken]);
 
 	return (
-		<AuthContext.Provider value={{ user, accessToken, setAccessToken }}>
+		<AuthContext.Provider
+			value={{ user, accessToken, setAccessToken, deviceId }}
+		>
 			{children}
 		</AuthContext.Provider>
 	);

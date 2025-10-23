@@ -1,15 +1,14 @@
 import jwt
-
+from channels.db import database_sync_to_async
 from django.conf import settings
 from django.contrib.auth import get_user_model
-
-from rest_framework import authentication
-from rest_framework import exceptions
+from django.db.models.fields import NullBooleanField
+from rest_framework import authentication, exceptions
 
 from .models import AccessToken, RefreshToken
 
-
 User = get_user_model()
+
 
 class JWTAuthentication(authentication.BaseAuthentication):
     """
@@ -19,13 +18,12 @@ class JWTAuthentication(authentication.BaseAuthentication):
     keyword = "Bearer"
 
     def authenticate(self, request):
-        auth_header = authentication.get_authorization_header(request).decode("utf-8")
         token = None
         token_type = "access"
 
-        if auth_header and auth_header.startswith(self.keyword):
-            token = auth_header[len(self.keyword):].strip()
-        else:
+        token = self._get_access_token_from_request(request)
+
+        if not token:
             cookie_token = request.COOKIES.get("refresh")
             if cookie_token:
                 token = cookie_token
@@ -53,6 +51,20 @@ class JWTAuthentication(authentication.BaseAuthentication):
             raise exceptions.AuthenticationFailed("Token expired or invalid")
 
         return (token_obj.user, token_obj)
+
+    def _get_access_token_from_request(self, request) -> str | None:
+        if hasattr(request, "data"):
+            token_qs = request.data.get("access_token")
+            if token_qs:
+                return token_qs if not isinstance(token_qs, list) else token_qs[0]
+
+        if hasattr(request, "META"):
+            auth_header = authentication.get_authorization_header(request).decode(
+                "utf-8"
+            )
+            if auth_header and auth_header.startswith(self.keyword):
+                return auth_header[len(self.keyword) :].strip()
+        return None
 
     def _decode_token(self, token):
         try:

@@ -1,32 +1,76 @@
 import json
+
 from channels.generic.websocket import AsyncWebsocketConsumer
+
+from user.models import User
+
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        await self.channel_layer.group_add("chat", self.channel_name)
+        self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
+        self.room_group_name = f"chat_{self.room_name}"
+
+        await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
 
     async def disconnect(self, close_code):
-        await self.channel_layer.group_discard("chat", self.channel_name)
+        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
-    async def receive(self, text_data):
-        data = text_data
+    async def receive(self, text_data: str) -> None:
         user = self.scope["user"]
 
-        await self.channel_layer.group_send(
-            "chat",
-            {
-                "type": "chat.message",
-                'user': {
-                    'username': user.username,
-                    'avatar': user.avatar if user.avatar else None,
-                    'is_current': False
-                },
-                'text': data.get("text", ""),
-            }
-        )
+        try:
+            data_json = json.loads(text_data)
+        except json.JSONDecodeError:
+            await self.send(
+                text_data=json.dumps(
+                    {"status": "error", "message": "Неверный формат JSON"}
+                )
+            )
+            return
+
+        action = data_json.get("action")
+        payload = data_json.get("data", {})
+
+        match action:
+            case "create_room":
+                await self.create_room(payload)
+            case "chat_message":
+                await self.send_message(payload, user)
+            case _:
+                await self.send(
+                    text_data=json.dumps(
+                        {
+                            "status": "error",
+                            "message": f"Неизвестное действие: {action}",
+                        }
+                    )
+                )
 
     async def chat_message(self, event):
-        await self.send(text_data=json.dumps({
-            "message": event["message"]
-        }))
+        """Получатель события из group_send"""
+
+        await self.send(
+            text_data=json.dumps({"user": event["user"], "text": event["text"]})
+        )
+
+    async def send_message(self, data: dict, user: User):
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                "type": "chat_message",
+                "user": {
+                    "username": user.username,
+                    "avatar": user.avatar.url if user.avatar else None,
+                    "is_current": False,
+                },
+                "text": data.get("text"),
+            },
+        )
+
+    async def create_chat(self, chat_type):
+        await self.send(
+            text_data=json.dumps(
+                {"status": "success", "message": f"Чат создан: {chat_type}"}
+            )
+        )

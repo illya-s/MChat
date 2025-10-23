@@ -13,7 +13,7 @@ import { routes } from "./routes.jsx";
 import { useEffect, useState } from 'react';
 
 import { lightTheme, darkTheme } from "./Theme.jsx"
-import { AuthContext } from './providers/AuthContext.jsx';
+import { AuthProvider } from './providers/AuthContext.jsx';
 
 
 const router = createBrowserRouter(routes);
@@ -42,11 +42,11 @@ function Root() {
                 // renderEmpty={customizeRenderEmpty}
                 theme={isDark ? darkTheme : lightTheme}
             >
-                <AuthContext>
+                <AuthProvider>
                     <MessageProvider>
                         <RouterProvider router={router} />
                     </MessageProvider>
-                </AuthContext>
+                </AuthProvider>
             </ConfigProvider>
         </StyleProvider>
     )

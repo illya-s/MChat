@@ -1,19 +1,62 @@
 import axios from "axios";
 
-export async function login(email, password) {
-	return await axios
+const api = axios.create({
+	baseURL: "http://localhost:8000",
+	withCredentials: true,
+});
+
+export async function request(email) {
+	return await api
 		.post(
-			"/api/auth/login/",
-			{ email, password },
+			"/user/auth/request/",
+			{ email: email },
 			{
 				withCredentials: true,
 			},
 		)
-		.then((res) => res.data.access_token);
+		.then((res) => {
+			return {
+				success: true,
+				message: res.data.message,
+			};
+		})
+		.catch((exc) => {
+			console.error(exc)
+			return {
+				success: false,
+				message: exc.response?.data?.message || "Ошибка соединения",
+			};
+		});
+}
+
+export async function enter(email, code, deviceId) {
+	return await api
+		.post(
+			"/user/auth/enter/",
+			{ email: email, code: code, device_id: deviceId },
+			{
+				withCredentials: true,
+			},
+		)
+		.then((res) => {
+			return {
+				success: true,
+				access_token: res.data.access_token,
+				message: res.data.message
+			}
+		})
+		.catch((exc) => {
+			console.error(exc)
+			return {
+				success: false,
+				access_token: null,
+				message: exc.response?.data?.message || "Ошибка соединения",
+			}
+		});
 }
 
 export async function refreshToken() {
-	return await axios
+	return await api
 		.post(
 			"/user/auth/refresh/",
 			{},
@@ -26,7 +69,7 @@ export async function refreshToken() {
 }
 
 export async function getUser(accessToken) {
-	return await axios
+	return await api
 		.get("/user/auth/session/", {
 			headers: { Authorization: `Bearer ${accessToken}` },
 		})

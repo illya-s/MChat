@@ -1,35 +1,38 @@
-import './DesktopLayout.css'
+import "./DesktopLayout.css";
 
-import useAuth from '../providers/useAuth';
-import { UserIcon } from '../assets/icons';
+import { useAuth } from "../providers/useAuth";
+import { UserIcon } from "../assets/icons";
 
-import { Outlet } from "react-router";
+import { Link, Outlet } from "react-router";
 
-import { Avatar, Layout } from 'antd';
-
+import { Avatar, Layout } from "antd";
 
 export default function DesktopLayout() {
-	const data = useAuth();
+	const { user } = useAuth();
 
 	return (
-		<Layout className='layout-wrapper'>
+		<Layout className="layout-wrapper">
 			<header>
 				<img src="./android-chrome-512x512.png" alt="" />
 
 				<h2>SoraLume.net</h2>
 
-				{/* <div>
-					{data?.user ? (
-						<Avatar size='small'>{user.username[0]}</Avatar>
-					) : (
+				{user ? (
+					<div className="layout-header-user-wrapper">
+						{user.username}
+						<Avatar size="small">{user.username[0]}</Avatar>
+					</div>
+				) : (
+					<Link to="/auth" className="layout-header-user-wrapper">
+						Вход
 						<UserIcon />
-					)}
-				</div>*/}
+					</Link>
+				)}
 			</header>
 
-			<main id='scrollableDiv' className="content">
+			<main id="scrollableDiv" className="content">
 				<Outlet />
 			</main>
 		</Layout>
-	)
+	);
 }

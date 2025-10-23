@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import useAuth from "../auth/useAuth";
+import { useAuth } from "../auth/useAuth";
 
 export default function ProtectedRoute({ children }) {
 	const navigate = useNavigate();
