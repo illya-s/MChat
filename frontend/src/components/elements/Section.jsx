@@ -1,8 +1,8 @@
 import './Section.css'
 
-export function Section({ className, children }) {
+export function Section({ className, style, children }) {
 	return (
-		<section className={`m-section ${className}`}>
+		<section style={style} className={`m-section ${className ? className : ''}`}>
 			{children}
 		</section>
 	)

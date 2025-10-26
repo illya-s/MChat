@@ -1,8 +1,6 @@
-import { Card, Button, Typography } from "antd";
-const { Paragraph } = Typography;
 import { Link } from "react-router";
 
-import { Section } from "../components/elements/Section";
+import { Button, Section } from "../components/Elements"
 import { LogoIcon } from "../assets/icons";
 
 import "./Home.css";
@@ -94,15 +92,15 @@ export default function Home() {
 		<div className="home-main-wrapper">
 			<Section className="home-section home-main-section">
 				<div className="home-main-left">
-					<div className="home-main-sectio-top-content">
+					<div className="home-main-top-content">
 						<LogoIcon />
 
-						<h1 className="home-main-sectio-top-title">
+						<h1 className="home-main-top-title">
 							Sora Lume — уголок света в цифровом мире
 						</h1>
 					</div>
 
-					<p className="">
+					<p className="home-main-top-text">
 						Добро пожаловать на Sora Lume — место, где общение
 						становится светлым и вдохновляющим. Присоединяйтесь к
 						нам, чтобы найти друзей, делиться идеями и вдохновляться
@@ -130,12 +128,12 @@ export default function Home() {
 				
 				<div className="home-main-buttons">
 					<Link to={"/auth"}>
-						<Button type="primary" block>
+						<Button color="primary" fontSize="md" block>
 							Присоединиться
 						</Button>
 					</Link>
 					<Link to="#about">
-						<Button color="default" variant="outlined" block>
+						<Button color="default" fontSize="md" variant="outlined" block>
 							Узнать больше
 						</Button>
 					</Link>
@@ -196,7 +194,7 @@ export default function Home() {
 							key={f.title}
 							className="home-principles-list-block"
 						>
-							<div>{f.icon}</div>
+							<div className="home-principles-list-block-icon">{f.icon}</div>
 							<div>
 								<h4 className="home-principles-list-block-title">
 									{f.title}

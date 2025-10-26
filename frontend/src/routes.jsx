@@ -1,4 +1,5 @@
 // import MobileLayout from "./layouts/MobileLayout.jsx";
+import ChatLayout from "./layouts/ChatLayout.jsx";
 import DesktopLayout from "./layouts/DesktopLayout.jsx";
 import About from "./pages/About.jsx";
 import Auth from "./pages/Auth.jsx";
@@ -20,21 +21,10 @@ export const routes = [
 				index: true,
 				element: <Home />,
 			},
-		]
-	},
-	{
-		path: '/',
-		element: <Layout />,
-		children: [
-			{
-				path: "/chat",
-				element: <Chat />,
-			},
 			{
 				path: '/about',
 				element: <About />,
 			},
-
 			{
 				path: '/auth',
 				children: [
@@ -44,6 +34,16 @@ export const routes = [
 					}
 				]
 			}
+		]
+	},
+	{
+		path: '/',
+		element: <ChatLayout />,
+		children: [
+			{
+				path: "/chat",
+				element: <Chat />,
+			},
 		]
 	},
 	{

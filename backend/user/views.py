@@ -89,6 +89,7 @@ class SessionView(APIView):
         user = request.user
         return Response(
             {
+                "id": user.pk,
                 "username": user.username,
                 "email": user.email,
                 "avatar": user.avatar.url if user.avatar else None,

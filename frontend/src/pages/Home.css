@@ -49,23 +49,28 @@
 	align-content: space-between;
 }
 
-.home-main-sectio-top-content {
+.home-main-top-content {
 	display: grid;
 	grid-template-columns: 90px auto;
 	align-items: center;
 	gap: var(--ant-padding-lg);
 }
-.home-main-sectio-top-content > svg {
+.home-main-top-content > svg {
 	width: 100%;
 	height: auto;
 }
-.home-main-sectio-top-title {
+.home-main-top-title {
 	font-size: 2.25rem;
 	font-weight: 800;
 	line-height: 1.25;
 	color: var(--ant-color-text-heading);
 	font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Helvetica Neue,Arial,sans-serif !important;
 }
+
+.home-main-top-text {
+    font-size: var(--ant-font-size-lg);
+}
+
 
 .home-main-right {
 	padding: var(--ant-padding-lg);
@@ -75,7 +80,7 @@
 }
 .home-main-right-title {
 	font-weight: bold;
-	font-size: var(--ant-font-size-heading-3);
+	font-size: var(--ant-font-size-heading-2);
 	color: var(--ant-color-text-heading);
 }
 .home-main-right-list {
@@ -88,13 +93,18 @@
 	
 	display: grid;
 	grid-template-rows: max-content auto;
-	gap: var(--ant-padding-xxs);
+	gap: var(--ant-padding-sm);
 	
 	border-radius: var(--ant-border-radius);
 	background-color: var(--ant-color-bg-container);
 }
+.home-main-right-list-block > h4 {
+    color: var(--ant-color-text-heading);
+    font-size: var(--ant-font-size-heading-3);
+}
 .home-main-right-list-block > p {
-	color: var(--ant-color-text-description);
+	color: var(--ant-color-text);
+	font-size: var(--ant-font-size-heading-4);
 }
 
 .home-main-buttons {
@@ -120,6 +130,9 @@
 	font-weight: bold;
 	font-size: var(--ant-font-size-heading-2);
 }
+.home-about-left > p {
+    font-size: var(--ant-font-size-heading-3);
+}
 
 .home-about-right {
 	height: max-content;
@@ -130,7 +143,7 @@
 
 .home-about-right-title {
 	font-weight: bold;
-	font-size: var(--ant-font-size-heading-3);
+	font-size: var(--ant-font-size-heading-2);
 	color: var(--ant-color-text-heading);
 }
 .home-about-right-list {
@@ -139,6 +152,7 @@
 	gap: var(--ant-padding-xxs);
 	
 	list-style: disc;
+	font-size: var(--ant-font-size-heading-3);
 }
 .home-about-right-list > li {
 	margin-left: var(--ant-margin);
@@ -153,7 +167,7 @@
 
 .home-principles-title {
 	color: var(--ant-color-text-heading);
-	font-weight: bold;
+	font-weight: 900;
 	font-size: var(--ant-font-size-heading-2);
 }
 .home-principles-list {
@@ -173,9 +187,14 @@
 	grid-template-columns: 75px auto;
 	gap: var(--ant-padding);
 	align-items: center;
+	
+	font-size: var(--ant-font-size-heading-4);
+}
+.home-principles-list-block-icon {
+    color: var(--ant-color-text-heading);
 }
 .home-principles-list-block-title {
-	font-size: var(--ant-font-size-heading-4);
+	font-size: var(--ant-font-size-heading-3);
 	font-weight: bold;
 	color: var(--ant-color-text-heading);
 }
@@ -220,7 +239,7 @@
 		align-items: normal;
 	}
 	
-	.home-main-sectio-top-title {
+	.home-main-top-title {
 		font-size: var(--ant-font-size-heading-1);
 	}
 	

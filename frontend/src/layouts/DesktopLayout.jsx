@@ -1,7 +1,7 @@
 import "./DesktopLayout.css";
 
 import { useAuth } from "../providers/useAuth";
-import { UserIcon } from "../assets/icons";
+import { LogoIcon, UserIcon } from "../assets/icons";
 
 import { Link, Outlet } from "react-router";
 
@@ -13,7 +13,7 @@ export default function DesktopLayout() {
 	return (
 		<Layout className="layout-wrapper">
 			<header>
-				<img src="./android-chrome-512x512.png" alt="" />
+				<LogoIcon />
 
 				<h2>SoraLume.net</h2>
 

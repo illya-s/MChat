@@ -1,8 +1,11 @@
 import json
 
+from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
-
+from django.utils import formats
 from user.models import User
+
+from chat.models import Message, Room
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -49,26 +52,54 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def chat_message(self, event):
         """Получатель события из group_send"""
+        await self.send(text_data=json.dumps(event))
 
-        await self.send(
-            text_data=json.dumps({"user": event["user"], "text": event["text"]})
-        )
+    @database_sync_to_async
+    def create_message(self, room: Room, user: User, text: str) -> Message:
+        return Message.objects.create(room=room, sender=user, text=text)
 
-    async def send_message(self, data: dict, user: User):
+    @database_sync_to_async
+    def get_room(self, hash):
+        return Room.objects.get(hash=hash)
+
+    async def send_message(self, data: dict, user: User) -> None:
+        try:
+            room = await self.get_room(self.room_name)
+            message = await self.create_message(room, user, data.get("text"))
+        except Room.DoesNotExist:
+            await self.channel_layer.group_send(
+                json.dumps(
+                    {
+                        "type": "error",
+                        "message": "Комната не существует или была удалена!",
+                    }
+                )
+            )
+            return
+        except Exception:
+            await self.send(
+                json.dumps({"status": "error", "message": "Не известная ошибка!"})
+            )
+            return
+
         await self.channel_layer.group_send(
             self.room_group_name,
             {
                 "type": "chat_message",
                 "user": {
+                    "id": user.pk,
                     "username": user.username,
                     "avatar": user.avatar.url if user.avatar else None,
-                    "is_current": False,
                 },
                 "text": data.get("text"),
+                "edited_at": formats.date_format(message.edited_at, "H:i")
+                if message.edited_at
+                else None,
+                "created_at": formats.date_format(message.created_at, "H:i"),
             },
         )
 
-    async def create_chat(self, chat_type):
+    async def create_room(self, chat_type: str) -> None:
         await self.send(
             text_data=json.dumps(
                 {"status": "success", "message": f"Чат создан: {chat_type}"}

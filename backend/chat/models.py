@@ -77,7 +77,7 @@ class Message(models.Model):
         if not self._text:
             return ""
         try:
-            fernet = Fernet(settings.FERNET_KEY)
+            fernet = Fernet(settings.FERNET_KEYS[0])
             return fernet.decrypt(self._text).decode()
         except Exception:
             return "[DECRYPTION_ERROR]"

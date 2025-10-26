@@ -1,4 +1,5 @@
 from django.utils import formats
+from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -37,7 +38,7 @@ class ChatList(APIView):
                     {
                         "hash": chat.hash,
                         "name": chat.name,
-                        "created_at": chat.created_at,
+                        "created_at": formats.date_format(chat.created_at, "j M Y"),
                         "members": [
                             {
                                 "username": member.user.username,
@@ -52,6 +53,36 @@ class ChatList(APIView):
                     for chat in Room.objects.filter(
                         members=user, parent=None
                     ).prefetch_related("members")
+                ]
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
+class ChatMessageList(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request: Request, hash: str) -> Response:
+        room = get_object_or_404(Room, hash=hash)
+
+        return Response(
+            {
+                "list": [
+                    {
+                        "text": message.text,
+                        "edited_at": formats.date_format(message.edited_at, "H:i")
+                        if message.edited_at
+                        else None,
+                        "created_at": formats.date_format(message.created_at, "H:i"),
+                        "user": {
+                            "id": message.sender.pk,
+                            "username": message.sender.username,
+                            "avatar": message.sender.avatar.url
+                            if message.sender.avatar
+                            else None,
+                        },
+                    }
+                    for message in room.messages.order_by("created_at")
                 ]
             },
             status=status.HTTP_200_OK,

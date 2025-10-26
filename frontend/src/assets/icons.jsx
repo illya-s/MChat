@@ -1,4 +1,6 @@
-import UserIcon from './icons/profile.svg?react'
-import LogoIcon from './icons/logo.svg?react'
+import UserIcon from "./icons/profile.svg?react";
+import LogoIcon from "./icons/logo.svg?react";
 
-export { LogoIcon, UserIcon }
+import SendIcon from "./icons/send.svg?react";
+
+export { LogoIcon, UserIcon, SendIcon };
