@@ -1,0 +1,376 @@
+:root {
+    --m-input-padding: var(--ant-padding-md) var(--ant-padding-lg);
+    --m-input-size: var(--ant-size-ms);
+    --m-input-font-size: var(--ant-font-size-lg);
+    --m-input-font-weight: 700;
+}
+
+
+.m-input {
+    padding: var(--m-input-padding);
+    
+    display: grid;
+    grid-template-columns: var(--m-input-size) 1fr;
+    gap: var(--ant-padding-xs);
+    align-items: center;
+
+    border-radius: var(--ant-border-radius);
+
+    font-size: var(--m-input-font-size);
+    font-weight: var(--m-input-font-weight);
+
+    transition: all 0.2s linear;
+}
+
+.m-input input {
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 100%;
+    font-family: inherit;
+}
+
+/* Если есть иконка — используем 2 колонки */
+.only-children {
+    grid-template-columns: 1fr;
+}
+
+/* ==== SIZES ==== */
+.m-input-xl {
+    --m-input-padding: var(--ant-padding-lg) var(--ant-padding-xl);
+    --m-input-size: var(--ant-size-md);
+    --m-input-font-size: var(--ant-font-size-xl);
+    --m-input-font-weight: 900;
+}
+.m-input-lg {
+    --m-input-padding: var(--ant-padding-md) var(--ant-padding-lg);
+    --m-input-size: var(--ant-size-ms);
+    --m-input-font-size: var(--ant-font-size-lg);
+    --m-input-font-weight: 700;
+}
+.m-input-md {
+    --m-input-padding: var(--ant-padding-sm) var(--ant-padding-sm);
+    --m-input-size: var(--ant-size-sm);
+    --m-input-font-size: var(--ant-font-size-md);
+    --m-input-font-weight: 500;
+}
+.m-input-ms {
+    --m-input-padding: var(--ant-padding-xs) var(--ant-padding-sm);
+    --m-input-size: var(--ant-size-xs);
+    --m-input-font-size: var(--ant-font-size-ms);
+    --m-input-font-weight: 300;
+}
+.m-input-sm {
+    --m-input-padding: var(--ant-padding-xs) var(--ant-padding-xs);
+    --m-input-size: var(--ant-size-xs);
+    --m-input-font-size: var(--ant-font-size-sm);
+    --m-input-font-weight: 100;
+}
+
+/* BUTTON THEMES */
+
+/* SOLID */
+.m-input-solid {
+    border-width: var(--ant-line-width);
+    border-style: var(--ant-line-type);
+
+    &.default {
+        background-color: var(--ant-color-bg-solid);
+        border-color: var(--ant-color-border);
+        color: var(--ant-color-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-bg-solid-hover);
+            border-color: var(--ant-color-border-secondary);
+            color: var(--ant-color-text-heading);
+        }
+    }
+    &.primary {
+        background-color: var(--ant-color-primary);
+        border-color: var(--ant-color-primary-border);
+        color: var(--ant-color-text-light-solid);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-primary-hover);
+            border-color: var(--ant-color-primary-border-hover);
+            color: var(--ant-color-primary-text-hover);
+        }
+    }
+    &.info {
+        background-color: var(--ant-color-info);
+        border-color: var(--ant-color-info-border);
+        color: var(--ant-color-text-light-solid);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-info-hover);
+            border-color: var(--ant-color-info-border-hover);
+            color: var(--ant-color-info-text-hover);
+        }
+    }
+    &.warning {
+        background-color: var(--ant-color-warning);
+        border-color: var(--ant-color-warning-border);
+        color: var(--ant-color-text-light-solid);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-warning-hover);
+            border-color: var(--ant-color-warning-border-hover);
+            color: var(--ant-color-warning-text-hover);
+        }
+    }
+    &.error {
+        background-color: var(--ant-color-error);
+        border-color: var(--ant-color-error-border);
+        color: var(--ant-color-text-light-solid);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-error-hover);
+            border-color: var(--ant-color-error-border-hover);
+            color: var(--ant-color-error-text-hover);
+        }
+    }
+    &.success {
+        background-color: var(--ant-color-success);
+        border-color: var(--ant-color-success-border);
+        color: var(--ant-color-text-light-solid);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-success-hover);
+            border-color: var(--ant-color-success-border-hover);
+            color: var(--ant-color-success-text-hover);
+        }
+    }
+}
+
+/* OUTLINED */
+
+.m-input-outlined {
+    border-width: var(--ant-line-width);
+    border-style: var(--ant-line-type);
+
+    &.default {
+        border-color: var(--ant-color-border);
+        color: var(--ant-color-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-bg-solid-hover);
+            border-color: var(--ant-color-border-secondary);
+            color: var(--ant-color-text-heading);
+        }
+    }
+    &.primary {
+        border-color: var(--ant-color-primary-border);
+        color: var(--ant-color-primary-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-primary-bg);
+            border-color: var(--ant-color-primary-border-hover);
+            color: var(--ant-color-primary-text-hover);
+        }
+    }
+    &.info {
+        border-color: var(--ant-color-info-border);
+        color: var(--ant-color-info-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-info-bg);
+            border-color: var(--ant-color-info-border-hover);
+            color: var(--ant-color-info-text-hover);
+        }
+    }
+    &.warning {
+        border-color: var(--ant-color-warning-border);
+        color: var(--ant-color-warning-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-warning-bg);
+            border-color: var(--ant-color-warning-border-hover);
+            color: var(--ant-color-warning-text-hover);
+        }
+    }
+    &.error {
+        border-color: var(--ant-color-error-border);
+        color: var(--ant-color-error-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-error-bg);
+            border-color: var(--ant-color-error-border-hover);
+            color: var(--ant-color-error-text-hover);
+        }
+    }
+    &.success {
+        border-color: var(--ant-color-success-border);
+        color: var(--ant-color-success-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-success-bg);
+            border-color: var(--ant-color-success-border-hover);
+            color: var(--ant-color-success-text-hover);
+        }
+    }
+}
+
+/* DASHED (как outlined, но dashed border) */
+.m-input-dashed {
+    border-width: var(--ant-line-width);
+    border-style: dashed;
+
+    &.default {
+        border-color: var(--ant-color-border);
+        color: var(--ant-color-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-bg-solid-hover);
+            border-color: var(--ant-color-border-secondary);
+            color: var(--ant-color-text-heading);
+        }
+    }
+    &.primary {
+        border-color: var(--ant-color-primary-border);
+        color: var(--ant-color-primary-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-primary-bg);
+            border-color: var(--ant-color-primary-border-hover);
+            color: var(--ant-color-primary-text-hover);
+        }
+    }
+    &.info {
+        border-color: var(--ant-color-info-border);
+        color: var(--ant-color-info-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-info-bg);
+            border-color: var(--ant-color-info-border-hover);
+            color: var(--ant-color-info-text-hover);
+        }
+    }
+    &.warning {
+        border-color: var(--ant-color-warning-border);
+        color: var(--ant-color-warning-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-warning-bg);
+            border-color: var(--ant-color-warning-border-hover);
+            color: var(--ant-color-warning-text-hover);
+        }
+    }
+    &.error {
+        border-color: var(--ant-color-error-border);
+        color: var(--ant-color-error-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-error-bg);
+            border-color: var(--ant-color-error-border-hover);
+            color: var(--ant-color-error-text-hover);
+        }
+    }
+    &.success {
+        border-color: var(--ant-color-success-border);
+        color: var(--ant-color-success-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-success-bg);
+            border-color: var(--ant-color-success-border-hover);
+            color: var(--ant-color-success-text-hover);
+        }
+    }
+}
+
+/* FILLED */
+.m-input-filled {
+    border-width: var(--ant-line-width);
+    border-style: none;
+
+    &.default {
+        background-color: var(--ant-color-fill-secondary);
+        border-color: var(--ant-color-border);
+        color: var(--ant-color-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-fill-tertiary);
+            border-color: var(--ant-color-border-secondary);
+            color: var(--ant-color-text-heading);
+        }
+    }
+    &.primary {
+        border-color: var(--ant-color-primary-border);
+        background-color: var(--ant-color-primary-bg);
+        color: var(--ant-color-primary-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-primary-bg-hover);
+            border-color: var(--ant-color-primary-border-hover);
+            color: var(--ant-color-primary-text-hover);
+        }
+    }
+    &.info {
+        border-color: var(--ant-color-info-border);
+        background-color: var(--ant-color-info-bg);
+        color: var(--ant-color-info-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-info-bg-hover);
+            border-color: var(--ant-color-info-border-hover);
+            color: var(--ant-color-info-text-hover);
+        }
+    }
+    &.warning {
+        border-color: var(--ant-color-warning-border);
+        background-color: var(--ant-color-warning-bg);
+        color: var(--ant-color-warning-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-warning-bg-hover);
+            border-color: var(--ant-color-warning-border-hover);
+            color: var(--ant-color-warning-text-hover);
+        }
+    }
+    &.error {
+        border-color: var(--ant-color-error-border);
+        background-color: var(--ant-color-error-bg);
+        color: var(--ant-color-error-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-error-bg-hover);
+            border-color: var(--ant-color-primary-error-hover);
+            color: var(--ant-color-error-text-hover);
+        }
+    }
+    &.success {
+        border-color: var(--ant-color-success-border);
+        background-color: var(--ant-color-success-bg);
+        color: var(--ant-color-success-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-success-bg-hover);
+            border-color: var(--ant-color-primary-success-hover);
+            color: var(--ant-color-success-text-hover);
+        }
+    }
+}
+
+/* TEXT */
+.m-input-text {
+    border-width: var(--ant-line-width);
+    border-style: none;
+
+    &.default {
+        color: var(--ant-color-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-fill-tertiary);
+            color: var(--ant-color-text-heading);
+        }
+    }
+    &.primary {
+        color: var(--ant-color-primary-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-primary-bg-hover);
+            color: var(--ant-color-primary-text-hover);
+        }
+    }
+    &.info {
+        color: var(--ant-color-info-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-info-bg-hover);
+            color: var(--ant-color-info-text-hover);
+        }
+    }
+    &.warning {
+        color: var(--ant-color-warning-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-warning-bg-hover);
+            color: var(--ant-color-warning-text-hover);
+        }
+    }
+    &.error {
+        color: var(--ant-color-error-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-error-bg-hover);
+            color: var(--ant-color-error-text-hover);
+        }
+    }
+    &.success {
+        color: var(--ant-color-success-text);
+        &:hover, &:active, &:has(input:focus) {
+            background-color: var(--ant-color-success-bg-hover);
+            color: var(--ant-color-success-text-hover);
+        }
+    }
+}
